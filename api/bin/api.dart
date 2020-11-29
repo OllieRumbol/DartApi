@@ -1,4 +1,5 @@
-import 'package:api/api.dart' as api;
+import 'package:api/Models/service.dart';
+import 'package:api/api.dart';
 import 'dart:io';
 
 Future main() async {
@@ -8,7 +9,9 @@ Future main() async {
   );
   print('Listening on localhost:${server.port}');
 
+  var apiRequests = ApiRequests(Service());
+
   await for (var request in server) {
-    api.handleRequest(request);
+    apiRequests.handleRequest(request);
   }
 }
