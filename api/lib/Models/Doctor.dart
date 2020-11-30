@@ -1,9 +1,9 @@
 import 'package:api/Models/Person.dart';
 
 class Doctor extends Person {
-  Specialty Type;
+  String Speciality;
 
-  Doctor(int Id, String Name, String Email, String PhoneNumber, this.Type)
+  Doctor(int Id, String Name, String Email, String PhoneNumber, this.Speciality)
       : super(Id, Name, Email, PhoneNumber);
 
   Map<String, dynamic> toJson() => {
@@ -11,8 +11,7 @@ class Doctor extends Person {
         'name': Name,
         'email': Email,
         'phoneNumber': PhoneNumber,
-        'type': Type.toString()
+        'speciality': Speciality
       };
 }
 
-enum Specialty { SURGEON, NEUROLOGIST, RADIOLOGIST, PHYSICIAN, PEDIATRICIAN }

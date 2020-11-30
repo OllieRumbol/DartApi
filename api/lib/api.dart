@@ -34,15 +34,34 @@ class ApiRequests {
 
   void handleGet(HttpRequest request) async {
     if (request.uri.pathSegments.last == 'doctors') {
-      handleGetDoctors(request);
+      handleGetDoctor(request);
     } else if (request.uri.pathSegments.last == 'appointments') {
+      handleGetAppointment(request);
     } else if (request.uri.pathSegments.last == 'patients') {
-    } else {}
+      handleGetPatient(request);
+    } else {
+      request.response
+        ..statusCode = HttpStatus.notAcceptable
+        ..write('Unsupported query: ${request.uri.path}.')
+        ..close();
+    }
 
     await request.response.close();
   }
 
   void handlePost(HttpRequest request) async {
+    if (request.uri.pathSegments.last == 'doctors') {
+      handlePostDoctor(request);
+    } else if (request.uri.pathSegments.last == 'appointments') {
+      handlePostAppointment(request);
+    } else if (request.uri.pathSegments.last == 'patients') {
+      handlePostPatient(request);
+    } else {
+      request.response
+        ..statusCode = HttpStatus.notAcceptable
+        ..write('Unsupported query: ${request.uri.path}.');
+    }
+
     await request.response.close();
   }
 
@@ -61,7 +80,7 @@ class ApiRequests {
         'Origin, X-Requested-With, Content-Type, Accept');
   }
 
-  void handleGetDoctors(HttpRequest request) {
+  void handleGetDoctor(HttpRequest request) {
     final id = request.uri.queryParameters['id'];
     request.response.statusCode = HttpStatus.ok;
     request.response.headers.contentType = ContentType.json;
@@ -72,4 +91,31 @@ class ApiRequests {
     }
     print(id);
   }
+
+  void handleGetAppointment(HttpRequest request) {}
+
+  void handleGetPatient(HttpRequest request) {}
+
+  void handlePostDoctor(HttpRequest request) async {
+    var content = await utf8.decoder.bind(request).join();
+    var data = jsonDecode(content) as Map;
+    service.AddDoctor(
+        data['name'], data['email'], data['phoneNumber'], data['speciality']);
+  }
+
+  void handlePostAppointment(HttpRequest request) {}
+
+  void handlePostPatient(HttpRequest request) {}
+
+  void handlePutDoctor(HttpRequest request) async {}
+
+  void handlePutAppointment(HttpRequest request) {}
+
+  void handlePutPatient(HttpRequest request) {}
+
+  void handleDeleteDoctor(HttpRequest request) async {}
+
+  void handleDeleteAppointment(HttpRequest request) {}
+
+  void handleDeletePatient(HttpRequest request) {}
 }
